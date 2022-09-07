@@ -1,6 +1,12 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Fireship sugesstion: Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker), App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want so.
+
+axios - для отправки запросов на сервер
+react router dom - для постраничной навигации
+mobx - стейт менеджер
+mobx lite - чтобы связать mobx с функциональными компонентами реакта
+
 
 ## Available Scripts
 
