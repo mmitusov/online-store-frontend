@@ -1,6 +1,7 @@
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'; //Чтобы навигация по страницам была возможна - оборачиваем наше приложение
 import './App.css';
+import { BrowserRouter } from 'react-router-dom'; //Чтобы навигация по страницам была возможна - оборачиваем наше приложение
+import AppRouter from './components/AppRouter';
 
 function App() {
   return (

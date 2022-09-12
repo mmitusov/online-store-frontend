@@ -22,6 +22,15 @@ Cоздаем задаем стартовую структуру нашему п
 Далее в папке src создаем routes.js - где будут описаны все маршруты к конкретным страницам которые есть в нашем приложении. Чтобы не указывать маршруты в виде строки в routes.js - мы создадали папку utils, а в ней файл с константами - consts.js. И от сюда будем уже експортировать нужные нам константы в routes.js
 
 После указания маршрутов в routes.js, мы писпользуем их в AppRouter, чтобы сделать их интерактивными
+
+
+//И поскольку мы пробегаемся по массиву - не забываем указывать ключ (object key:value pair). Ключом будет путь, так как каждый путь уникальный
+import { Routes, Route, Redirect } from 'react-router-dom';
+
+In react router v6, the exact prop has been removed and you can put your routes in whatever order you wish and the router automatically detects the best route for the current URL - 
+https://bobbyhadz.com/blog/react-export-switch-imported-as-switch-not-found
+https://www.moreonfew.com/attempted-import-error-switch-is-not-exported-from-react-router-dom/
+
 ## Available Scripts
 
 In the project directory, you can run:
