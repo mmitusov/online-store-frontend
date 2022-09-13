@@ -27,7 +27,7 @@ Cоздаем задаем стартовую структуру нашему п
 //И поскольку мы пробегаемся по массиву - не забываем указывать ключ (object key:value pair). Ключом будет путь, так как каждый путь уникальный
 import { Routes, Route, Redirect } from 'react-router-dom';
 
-In react router v6, the exact prop has been removed and you can put your routes in whatever order you wish and the router automatically detects the best route for the current URL - 
+In react router v6, the exact prop has been removed and you can put your routes in whatever order you wish and the router automatically detects the best route for the current URL -
 https://bobbyhadz.com/blog/react-export-switch-imported-as-switch-not-found
 https://www.moreonfew.com/attempted-import-error-switch-is-not-exported-from-react-router-dom/
 
