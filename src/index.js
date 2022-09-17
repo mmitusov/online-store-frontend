@@ -1,7 +1,21 @@
-import React from 'react';
+//Здесь мы начнем внедрять логику опрокидывания состояний mobx (из UserStore) в наши компоненты
+//Для этого воспользуемся контекстом реакта и обернем все наше приложениее (самый первичный родительский компонент) в него - "<Context.Provider>"
+//И в пропсах Context.Provider создадим новый объект класа UserStore. UserStore - это наш mobx (глобальное хранилище состояний)
+//И теперь мы можем напрямую обмениватся состояниями из UserStore, со всеми дочерними компонентами нашего приложения. Просто ссылаясь на наш Context
+
+import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
+import UserStore from './store/userStore';
 import './index.css';
 import App from './App';
 
+export const Context = createContext(null);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+    <Context.Provider value={{
+        user: new UserStore()
+    }}>
+        <App />
+    </Context.Provider>
+);
