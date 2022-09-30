@@ -10,7 +10,7 @@
 VS Code расширения:
     ES7+ React/Redux/React-Native snippets – командой “rfce” можно создавать класовый скелет компонентов в React
 
-Fireship sugesstion: Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker) and App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want to.
+Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker) and App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want to. Также удалим все лишнее из index.html. В index.html, в <body> будет храниться единственный div. И именно в него будет монтироваться наше приложение (наш корневой компонент App).
 
 Cоздаем задаем стартовую структуру нашему приложению и создади новые папки в src:
     store - для взаимодействия с mobx и хранения каких либо данных
