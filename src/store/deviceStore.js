@@ -18,6 +18,10 @@ export default class DeviceStore {
         ]
         this._brands = [
             {id: 1, name: "Samsung"},
+            {id: 1, name: "Samsung"},
+            {id: 1, name: "Samsung"},
+            {id: 1, name: "Samsung"},
+            {id: 1, name: "Samsung"},
             {id: 2, name: "Apple"}
         ]
         this._devices = [
@@ -27,7 +31,8 @@ export default class DeviceStore {
             {id: 3, name: "iPhone 14 Pro Max", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"}
         ]
         this._selectedType = {}
-        makeAutoObservable(this) 
+        this._selectedBrand = {}
+        makeAutoObservable(this)
     }
     
     setTypes(types) {
@@ -42,6 +47,9 @@ export default class DeviceStore {
     setSelectedType(type) {
         this._selectedType = type
     }
+    setSelectedBrand(brand) {
+        this._selectedBrand = brand
+    }
     get types() {
         return this._types
     }
@@ -53,6 +61,9 @@ export default class DeviceStore {
     }
     get selectedType() {
         return this._selectedType
+    }
+    get selectedBrand() {
+        return this._selectedBrand
     }
 
 }
