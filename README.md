@@ -5,7 +5,7 @@
     react router dom - для постраничной навигации
     mobx - стейт менеджер (по типу Redux)
     mobx lite - чтобы связать mobx с функциональными компонентами реакта
-    bootstrap-react - Для работы с bootstrap заходим в в папку public, файл index.html, и вставляем в него код с официального сайта bootstrap
+    bootstrap-react - Для работы с bootstrap заходим в в папку public, файл index.html, и вставляем в него код с официального сайта bootstrap 
 
 VS Code расширения:
     ES7+ React/Redux/React-Native snippets – командой “rfce” можно создавать класовый скелет компонентов в React
