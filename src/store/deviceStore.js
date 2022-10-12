@@ -18,11 +18,9 @@ export default class DeviceStore {
         ]
         this._brands = [
             {id: 1, name: "Samsung"},
-            {id: 1, name: "Samsung"},
-            {id: 1, name: "Samsung"},
-            {id: 1, name: "Samsung"},
-            {id: 1, name: "Samsung"},
-            {id: 2, name: "Apple"}
+            {id: 2, name: "Apple"},
+            {id: 3, name: "Xiaomi"},
+            {id: 4, name: "Asus"},
         ]
         this._devices = [
             {id: 1, name: "iPhone 14", price: 800, raiting: 5, img: "https://www.apple.com/newsroom/images/product/iphone/geo/Apple_iphone13_hero_geo_09142021_inline.jpg.large.jpg"},
