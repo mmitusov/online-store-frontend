@@ -1,3 +1,5 @@
+//AppRouter проверяет, зарегестрирован ли наш юзер
+
 import React from 'react'
 import './App.css';
 import { BrowserRouter } from 'react-router-dom'; //Чтобы навигация по страницам была возможна - оборачиваем наше приложение

@@ -1,3 +1,4 @@
+//Здесь мы отобржаем TypeBar, BrandBar и DeviceList
 //Опять же, весь компонент оборачиваем в контейнер. А внутри контейнера добавим Row & Col
 //В отличее от Auth.js, здесь Row должен работать нормально. По документации он работает нормально только с елементами завернутыми в Col. Поэтому и не сработал в Auth.js
 //Первый Col (md={3}) выделим под левую панельку (указаны девайсы/их типы), а вторую (md={9}) под карточки магазина с изображением товара
@@ -10,7 +11,7 @@ import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import BrandBar from '../components/BrandBar'
 import DeviceList from '../components/DeviceList'
-import TypeBar from '../components/typeBar'
+import TypeBar from '../components/TypeBar'
 
 const Shop = () => {
   return (

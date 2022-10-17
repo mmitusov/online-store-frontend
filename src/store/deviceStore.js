@@ -26,7 +26,7 @@ export default class DeviceStore {
             {id: 1, name: "iPhone 14", price: 800, raiting: 5, img: "https://www.apple.com/newsroom/images/product/iphone/geo/Apple_iphone13_hero_geo_09142021_inline.jpg.large.jpg"},
             {id: 2, name: "iPhone 14 Max", price: 900, raiting: 5, img: "https://www.apple.com/newsroom/images/product/iphone/geo/Apple_iphone13_hero_geo_09142021_inline.jpg.large.jpg"},
             {id: 3, name: "iPhone 14 Pro", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"},
-            {id: 3, name: "iPhone 14 Pro Max", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"}
+            {id: 4, name: "iPhone 14 Pro Max", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"}
         ]
         this._selectedType = {}
         this._selectedBrand = {}
