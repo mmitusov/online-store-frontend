@@ -1,6 +1,7 @@
 //Вначале сразу получаем глабальное хранилище UserStore (mobx) из Context. Еедь в зависимости от того авторизован пользователь или нет - наш NavBаr будет меняться
 //Далее копируем с сайта bootstrap react нужный нам навбар и импортируем необходимые для его работы модули. Нужные модули указаны на сайте
 //После чего експортируем NavBаr и импортируем его в App.js, чтобы он отображался у нас на каждой странице
+//Container Component provides a way to center and horizontally pad the contents of our application. It is used when the user wants the responsive pixel width. 
 //То есть, так как в App.js отображаются все видимые нам компоненты, то сверху мы помещаем NavBar (виден всегда), а под ним AppRouter который будет уже отображать под NavBar тот компонет который будет указан в AppRouter
 //Далее поменяем NavLink из bootstrap на NavLink из react-router-dom, чтобы мы могли переключаться по нашим pages (пользоваться нашим react-router-dom)
 //Далее быстренько настроим новый navbar - убераем лишнее, добавляем нужное, меняем стили.
