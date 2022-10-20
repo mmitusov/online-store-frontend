@@ -12,6 +12,12 @@
 //Далее, чтобы елемент, в зависимости от действий юзера, перерендривался в режиме реального времени (чтобы mobx мог отслеживать изменения значений состояний и при их изменении автоматически обновлять контент страницы) - обернем наш компонент в функцию observer()
 //И убедимся что все работает при помощи слушателя "onClick={() => user.setIsAuth(true)}" на кнопке аторизации. При нажатии - становимся авторизованими. setIsAuth(true) - это финкция которую мы создали в хранилище mobx
 //Далее, чтобы все елементы внутри навбара отцентровать (чтобы все елементы были на одном уровне) - обернем все елементы навбара в "<Container fluid>"
+
+//Далее сделаем кнопки 'Админ панель' и 'Выйти' кликабельными
+//Не забываем, что если в UserStore - юзер this._isAuth = true (или берем условие из БД), то мы не можем перейти на админ панель, и нас перекинет на домашнию страницу
+//Импортируем хук useNavigate из 'react-router-dom', который поможет нам динамически передвигаться по страницам (В старой версии назывался useHistory)
+//Вешаем слушатель события onClick на конкретный елемент-карточку и вызываем функцию navigate (useNavigate()). В старой версии нужно было вызывать navigate.push()
+//В функцию передаем ADMIN_ROUTE и LOGIN_ROUTE, чтобы при нажатии на кнопку перемещатся на их страницы
 import React, { useContext } from 'react'
 import {Context} from '../index'
 import Container from 'react-bootstrap/Container';
@@ -19,11 +25,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { SHOP_ROUTE } from '../utils/consts';
+import { ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom'
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
+    const navigate = useNavigate()
+
     return (
         <Navbar bg="light" expand="lg">
             <Container fluid>
@@ -32,12 +41,18 @@ const NavBar = observer(() => {
                 <Navbar.Collapse id="navbarScroll">
                     {user.isAuth ?
                         <Nav className="ms-auto my-2 my-lg-0" style={{color: 'blue'}} navbarScroll> {/*P.S. ml-auto не работает, работает - ms-auto*/}
-                            <Button variant='outline-ligth'>Админ панель</Button>
-                            <Button variant='outline-ligth' className="ms-3">Выйти</Button>  {/*Чтобы кнопки не слипались добавим margin_start-3*/}                  
+                            <Button variant='outline-ligth' onClick={() => navigate(ADMIN_ROUTE + '/')}>
+                                Админ панель
+                            </Button>
+                            <Button variant='outline-ligth' className="ms-3" onClick={() => navigate(LOGIN_ROUTE + '/')}>
+                                Выйти
+                            </Button>  {/*Чтобы кнопки не слипались добавим margin_start-3*/}                  
                         </Nav>
                     :
                         <Nav className="ms-auto my-2 my-lg-0" style={{color: 'blue'}} navbarScroll> {/*P.S. ml-auto не работает, работает - ms-auto*/}                     
-                            <Button onClick={() => user.setIsAuth(true)} variant='outline-ligth'>Авторизация</Button>                                    
+                            <Button onClick={() => user.setIsAuth(true)} variant='outline-ligth'>
+                                Авторизация
+                            </Button>                                    
                         </Nav>
                     }                    
                 </Navbar.Collapse>
