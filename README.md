@@ -1,16 +1,4 @@
-# Getting Started with Create React App
-
-Перечень используемых пакетов:
-    axios - для отправки запросов на сервер
-    react router dom - для постраничной навигации
-    mobx - стейт менеджер (по типу Redux)
-    mobx lite - чтобы связать mobx с функциональными компонентами реакта
-    bootstrap-react - Для работы с bootstrap заходим в в папку public, файл index.html, и вставляем в него код с официального сайта bootstrap 
-
-VS Code расширения:
-    ES7+ React/Redux/React-Native snippets – командой “rfce” можно создавать класовый скелет компонентов в React
-
-Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker) and App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want to. Также удалим все лишнее из index.html. В index.html, в <body> будет храниться единственный div. И именно в него будет монтироваться наше приложение (наш корневой компонент App).
+# История создания приложения + его описание
 
 Cоздаем задаем стартовую структуру нашему приложению и создади новые папки в src:
     store - для взаимодействия с mobx и хранения каких либо данных
@@ -18,7 +6,7 @@ Cоздаем задаем стартовую структуру нашему п
     components - для всяких нав-баров и в т.д.
 
 Также сразу создадим некоторые страницы:
-    в папке pages: Auth (страница с авторизацией), Shop (основная страница с карточками, постраничный вывод, список брендов и т.д.), DevicePage (страница конкретного устройства), Admin (здесь админ сможет добавлять типы, бренды и устройства), Basket (страница с корзиной (реализовывать не будем/как домашка))
+    в папке pages: Auth (страница с авторизацией), Shop (основная страница с карточками, постраничный вывод, список брендов и т.д.), DevicePage (страница конкретного устройства), Admin (здесь админ сможет добавлять типы, бренды и устройства), Basket (страница с корзиной (реализовывать не будем))
 
 Теперь зная какие страницы будут в нашем приложении - мы можем реализовать навигацию по ним. Для этого в папке components создадим AppRouter. В нем будет описана логика навигации по страницам. Какие то страницы доступны всем, какие то - только авторизованным.
 
@@ -51,3 +39,17 @@ Cоздаем задаем стартовую структуру нашему п
 Далее, займемся страницей магазина. Магазин находится у нас в Shop.js. Однако, логику вытягивания перечня типов товаров и их брендов из БД и дальнейший их вывод на фронтенд, мы пропишем в отдельных компонентах TypeBar.js, BrandBar.js и DeviceList.js. После чего, уже будем импортировать эти компоненты непосредственно в Shop.js. TypeBar.js и BrandBar.js выполняют функции фильтров товара, а DeviceList.js ответственный за отображание сетки/списка с товарами на главной странице нашего магазина.
 
 Теперь можно приступить к реализации DevicePage. Это страница, которая при выборее товара из перечня всех товаров в магазине, будет отображать детали о нем, с возможностью добавления этого товара в корзину.
+
+# Заметки
+
+Перечень используемых пакетов:
+    axios - для отправки запросов на сервер
+    react router dom - для постраничной навигации
+    mobx - стейт менеджер (по типу Redux)
+    mobx lite - чтобы связать mobx с функциональными компонентами реакта
+    bootstrap-react - Для работы с bootstrap заходим в в папку public, файл index.html, и вставляем в него код с официального сайта bootstrap 
+
+VS Code расширения:
+    ES7+ React/Redux/React-Native snippets – командой “rfce” можно создавать класовый скелет компонентов в React
+
+How to properly clean Create-React-App. -> Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker) and App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want to. Также удалим все лишнее из index.html. В index.html, в <body> будет храниться единственный div. И именно в него будет монтироваться наше приложение (наш корневой компонент App).
