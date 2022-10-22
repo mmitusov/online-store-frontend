@@ -8,7 +8,7 @@
 //И опрокидываем оба пропса в корень модального окна, в тег <Modal>
 //И добавим еще одну кнопку. Одна - для добавления нового типа товара, другая - для закрытия модального окна
 
-//Здесь нам понадобится воспользоватся нашим deviceStore хранилищем (mobx), поэтому получаем его с помощью хука useContext()
+//Здесь нам понадобится воспользоватся нашим deviceStore хранилищем (mobx), для показа списков брендов и типов товара, поэтому получаем его с помощью хука useContext()
 //Дабавляем бутстраповский <Dropdown>. В нем будет храниться <Dropdown.Toggle> который активирует выпадающий список, для выбора типа/бренда для нового устройства
 //Сам же список будет отрисовыватьчя при помощи <Dropdown.Menu> и <Dropdown.Item>
 //Дальше мы пробежимся по всем типам девайсам из нашей БД (device.types.map()) и имя каджого из типов отресуем в отдельном <Dropdown.Item>
@@ -20,13 +20,25 @@
 //И в конце всех инпутов, для красоты, добавим разделительную черту <hr/>
 //Дополнительно, я лично обернул оба <Dropdown> в className='d-flex justify-content-around', чтобы они шли не один под одним, а симетрично в одну строку
 
+//Также для каждого устройства нужно будет добавлять массив хорактеристик, для этого создадим отдельное состояние c пустым массивом - {info, setInfo}
+//Под <hr/> создаем кнопку под добавление новых характеристик товара
+//И реализуем функцию, с помощюь которой, мы эти хорактеристики будем добавлять
+
 import React from 'react'
+import { useState } from 'react'
 import { useContext } from 'react'
-import { Button, Dropdown, Form, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap'
 import {Context} from '../../index'
 
 const CreateDevice = ({show, onHide}) => {
   const {device} = useContext(Context)
+  const [info, setInfo] = useState([])
+  const addInfo = () => {
+    setInfo([...info, {title:'', description:'', number: Date.now()}])
+  }
+  const removeInfo = (number) => {
+    setInfo(info.filter(i => i.number !== number))
+  }
 
   return (
     <Modal
@@ -72,6 +84,29 @@ const CreateDevice = ({show, onHide}) => {
           type='file'
         />
         <hr/>
+
+        <Button variant='outline-dark' onClick={addInfo}>
+          Добавить новую характеристику товара
+        </Button>
+        {info.map(i => 
+          <Row className='mt-3' key={i.number}>
+            <Col md={4}>
+              <Form.Control 
+                placeholder='Введите название характеристики товара'
+              />              
+            </Col>
+            <Col md={4}>
+              <Form.Control 
+                placeholder='Введите описание характеристики товара'
+              />
+            </Col>
+            <Col md={4}>
+              <Button variant='outline-danger' onClick={() => removeInfo(i.number)}>
+                Удалить
+              </Button>
+            </Col>
+          </Row>  
+        )}
 
       </Form>
     </Modal.Body>
