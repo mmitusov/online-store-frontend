@@ -11,7 +11,8 @@
 //Далее создадим три состояния (с помощью хуков), которые будут отвечать за то, видим ли мы модальное окно или нет: brandVisible, deviceVisible, typeVisible
 //Теперь мы можем, при помощи пропсов show={}, передавать значения этх состояний в модальные окна, чтобы отобразить их
 //И также передадим в наши модальные окна функцию, которая эти окна будет закрывать
-//И остальсь написать логику которая бы откравала бы эти модальные окна при нажатии, на кнопку "Добавить тип" и т.д
+//И остальсь написать логику onClick() которая бы откравала бы эти модальные окна при нажатии, на кнопку "Добавить тип" и т.д.
+//onHide - закрывает модальное, onClick - открывает модальное
 
 import React, { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
@@ -26,19 +27,19 @@ const Admin = () => {
 
   return (
     <Container className='d-flex flex-column'>
-      <Button variant={'outline-dark'} className='mt-4 p-2' >
+      <Button variant={'outline-dark'} className='mt-4 p-2' onClick={() => setTypeVisible(true)}>
         Добавить тип
       </Button>
-      <Button variant={'outline-dark'} className='mt-4 p-2'>
+      <Button variant={'outline-dark'} className='mt-4 p-2' onClick={() => setBrandVisible(true)}>
         Добавить бренд
       </Button>
-      <Button variant={'outline-dark'} className='mt-4 p-2'>
+      <Button variant={'outline-dark'} className='mt-4 p-2' onClick={() => setDeviceVisible(true)}>
         Добавить устройство
       </Button>
 
-      <CreateType show={typeVisible}/>
+      <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
-      <CreateDevice show={deviceVisible}/>      
+      <CreateDevice show={deviceVisible} onHide={() => setDeviceVisible(false)}/>      
     </Container>
   )
 }
