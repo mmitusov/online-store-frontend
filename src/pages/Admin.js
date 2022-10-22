@@ -8,18 +8,25 @@
 //Для этого создадим под данные елементы новую папку modals внутри папки components. Где каждое модальное окно будет как отдельный компонент 
 //Импортируем наши новые компонеты отдельно от кнопок (под ними). Ведь окно будет появляться не в пределах одной кнопки, а на весь екран
 //Каждая кнопка буде включать появление каждого отдельного модального окна
-//Далее создадим три состояния (с помощью хуков), которые будут отвечать за то, видим ли мы модальное окно или нет
+//Далее создадим три состояния (с помощью хуков), которые будут отвечать за то, видим ли мы модальное окно или нет: brandVisible, deviceVisible, typeVisible
+//Теперь мы можем, при помощи пропсов show={}, передавать значения этх состояний в модальные окна, чтобы отобразить их
+//И также передадим в наши модальные окна функцию, которая эти окна будет закрывать
+//И остальсь написать логику которая бы откравала бы эти модальные окна при нажатии, на кнопку "Добавить тип" и т.д
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import CreateBrand from '../components/modals/CreateBrand'
 import CreateDevice from '../components/modals/CreateDevice'
 import CreateType from '../components/modals/CreateType'
 
 const Admin = () => {
+  const [typeVisible, setTypeVisible] = useState(false)
+  const [brandVisible, setBrandVisible] = useState(false)
+  const [deviceVisible, setDeviceVisible] = useState(false)  
+
   return (
     <Container className='d-flex flex-column'>
-      <Button variant={'outline-dark'} className='mt-4 p-2'>
+      <Button variant={'outline-dark'} className='mt-4 p-2' >
         Добавить тип
       </Button>
       <Button variant={'outline-dark'} className='mt-4 p-2'>
@@ -29,9 +36,9 @@ const Admin = () => {
         Добавить устройство
       </Button>
 
-      <CreateBrand />
-      <CreateDevice />
-      <CreateType />
+      <CreateType show={typeVisible}/>
+      <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
+      <CreateDevice show={deviceVisible}/>      
     </Container>
   )
 }
