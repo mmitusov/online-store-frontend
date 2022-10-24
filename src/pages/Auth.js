@@ -9,14 +9,15 @@
 //Для этого завернем эту ссылку и кнопку Войти в одну новую строку (компонет Row), для того чтобы мы потом могли их расположить друг относительно друга, в рамках отдельного Row, а не всего контейнера. 
 //При создании ссылки, перед кнопкой Войти добавим простой div, куда и поместим предложение о регестрации с последующей ссылкой на данную страницу
 //Чтобы расположить елементы в Row по разные стороны контейнера, то воспользуемся "d-flex justify-content-between". И теперь стили расположения кнопки Войти можно убрать
-//!!!P.S. Почему-то в новой версии bootstrap, при использовании Row у нас ничего не выравнивается. Но когда я заменил бутстраповский Row на обычный <div> - все заработало и выравнялось
+//!!!P.S. Почему-то в новой версии bootstrap, при использовании Row у нас ничего не выравнивается.
+//В новой версии bootstrap, для достежения нужного еффекта нужно использовать Form вместо Row
 //!!!По новой документации Row работает нормально только с елементами завернутыми в Col. Поэтому и не сработал в Auth.js
 
 //Завершив форму логина, теперь мы должны дополнительно добавить форму регистрации (в этом же файле). Чтобы в зависимости от указанной в браузере ссылки (маршрута), у нас отображался либо логин, либо регистрация
 //Для этого воспользуемся хуком "useLocation" из 'react-router-dom'. С помощью него можно получить маршрут в строке запроса (маршрут хранится в ключе pathname)
 //И теперь когда маршрут из браузера будет совпадать с LOGIN_ROUT (true), мы будем отрисовывать часть кода с логином, а если нет, то с регистрацией
 //Чтобы не дублировать код, логику "или" можно было бы прописать только в тех частях где меняется текст/ссылки. Но для для лишей наглядности, я разделил полностью продублировал и разделил две логики
-import React from 'react' //rafce snippet
+import React from 'react'
 import { Button, Card, Container, Form } from 'react-bootstrap'
 import { NavLink, useLocation } from 'react-router-dom'
 import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts'
@@ -36,10 +37,10 @@ const Auth = () => {
           <Form className='d-flex flex-column'>
             <Form.Control placeholder="Введите ваш email" className='mt-2'/>
             <Form.Control placeholder="Введите ваш пароль" className='mt-3'/>
-            <div className='d-flex justify-content-between mt-3'>
+            <Form className='d-flex justify-content-between mt-3'>
               <div>Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегестрируйся!</NavLink></div>
               <Button variant='outline-success'>Войти</Button>
-            </div>
+            </Form>
           </Form>
         </Card>
       :
@@ -48,10 +49,10 @@ const Auth = () => {
         <Form className='d-flex flex-column'>
           <Form.Control placeholder="Введите ваш email" className='mt-2'/>
           <Form.Control placeholder="Введите ваш пароль" className='mt-3'/>
-          <div className='d-flex justify-content-between mt-3'>
+          <Form className='d-flex justify-content-between mt-3'>
             <div>Уже есть аккаунт? <NavLink to={LOGIN_ROUTE}>Заходи!</NavLink></div>
             <Button variant='outline-success'>Зарегестрироваться</Button>
-          </div>
+          </Form>
         </Form>
       </Card>
     }

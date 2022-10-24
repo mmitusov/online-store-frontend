@@ -20,7 +20,7 @@ const Shop = () => {
         <Col md={3}>
           <TypeBar />
         </Col>
-        <Col xl={9} xxl={9} lg={9} md={5} sm={3} >
+        <Col lg={9} md={9} sm={9} >
           <BrandBar />
           <DeviceList />
         </Col>

@@ -13,20 +13,21 @@
 //А также, чтобы было понятно что наши елементы кликабельны - при наведении на елемент, курсор будет менятся на поинтер style={{cursor: "pointer"}}
 //!!!P.S. Все то что говорилось в туториале - не работает! В этом примере мы не должны использовать ListGroup (только Card). Но кнопки при нажатии подсвечиваются только с ним. При чем ListGroup криво отображается и изменить это нельзя
 //!!!P.S. Решил оставить кривой ListGroup только из-за подсветки кнопки. Хотя вместо подстветки должна была бы подсвечиваться только рамка кнопки. Но я выбрал посдсветку кнопки (active) вместо рамки (border), потому что комада border не работает
-//!!!P.S.S В итоге получилось решить все при помощи <CardGroup> и <Card>. Оказывается для <Card> работает команда комада border, но не работает active, поэтому и натыкался на ошибки. (Список команд и стилей для каждого компонента указан в документации, внизу страницы)
+//!!!P.S.S В итоге получилось решить все при помощи <CardGroup> и <Card>. Оказывается для <Card> работает команда комада border, но не работает active, поэтому и натыкался на ошибки. Но хоть border заработал, но рамка отображается квадратной и криво
+//!!!!!P.S.S.S Нашел решение в коментах на YouTube - заменяем CardGroup/Row на Form. И теперь все работает и отображается тоже красиво
 //В итоге, подсведку всей кнопки заменил на подсветку только ее рамки: {brand.id === device.selectedBrand.id ? "primary" : "light"}. При нажатии на бренд активируется цвет "primary", пока все остальные остаются по умолчанию "light"
 
 import React, { useContext } from 'react'
 import {Context} from '../index'
 import { observer } from 'mobx-react-lite'
-import { Card, CardGroup, ListGroup } from 'react-bootstrap'
+import { Card, Form } from 'react-bootstrap'
 
 const BrandBar = observer(() => {
     const {device} = useContext(Context)
 
     return (
         
-        <CardGroup>
+        <Form className='d-flex'>
             {device.brands.map(brand => //brand от сюда
                 <Card
                     style={{cursor: 'pointer', width: '18rem'}}                    
@@ -38,7 +39,7 @@ const BrandBar = observer(() => {
                     {brand.name}
                 </Card>    
             )}
-        </CardGroup>          
+        </Form>          
                
     )
 })
