@@ -12,7 +12,7 @@ import './index.css';
 import App from './App';
 
 export const Context = createContext(null);
-console.log(process.env.REACT_APP_API_URL)
+console.log(process.env.REACT_APP_API_URL) //Для проверки работы .env
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
