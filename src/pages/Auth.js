@@ -31,17 +31,28 @@
 //Теперь значения email и password из наших состояний передаем в функцию registration()
 //И не забываем повесить на кнопки "Войти/Зарегестрироваться" слушатель события onClick={click}, чтобы передать наше текущее состояние в функцию click() 
 //И пока, для провери работы, просто выведим в логи то что находиться в нашем response от сервера, после отправки туда данных о пользователе (console.log(response))
-//P.S. Должен вернуться ответ, который будет включать в себя JWT токен
+//P.S. Должен вернуться ответ, в котором одно из полей будет JWT токеном
+//Теперь userAPI.js установим пакет 'jwt-decode', и при помощи него будем декодировать токен, и в Auth.js возвращать уже объект с информацией о пользователе
+//Убедившись, что все работает - обернем весь наш компонет в observer('mobx-react-lite'), чтобы елемент, в зависимости от действий юзера, перерендривался в режиме реального времени (чтобы mobx мог отслеживать изменения значений состояний и при их изменении автоматически обновлять контент страницы)
+//Закончим логику функции click() - создадим и вынесем наверх функции одну переменую response, вместо того чтобы создавать две отдельные (под регестрацию и логин)
+//Далее нам уже понадобится хранилище userStore.js (импортируем его). Напоминаю, имя {user} - это то имя что мы создали в корневом index.js
+//Так как userStore.js должент хранить в себе инфо о пользователе, то добавим туда новую инфо 'user.setUser(response)' и 'user.setIsAuth(true)' - в зависимости от статуса пользователя, некоторый функционал может быть закрытым, такой как страница Админа
+//Теперь, когда в userStore.js, "this._isAuth" может меняться динамически, то поменяем ранее заданое true в userStore.js (для тестинга работоспособности), на изначальное false
 
+//Но что если пользователь ввел невреные данные логина? Мы должны как-то ему на это указать
+//
 
-import React from 'react'
+import { observer } from 'mobx-react-lite'
+import React, { useContext } from 'react'
+import {Context} from '../index'
 import { useState } from 'react'
 import { Button, Card, Container, Form } from 'react-bootstrap'
 import { NavLink, useLocation } from 'react-router-dom'
 import { login, registration } from '../http/userAPI'
 import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts'
 
-const Auth = () => {
+const Auth = observer(() => {
+  const {user} = useContext(Context)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -49,13 +60,15 @@ const Auth = () => {
   const isLogin = location.pathname === LOGIN_ROUTE
 
   const click = async () => {
+    let response;
     if (isLogin) {
-      const response = await login(email, password)
-      console.log(response)
+      response = await login(email, password)     
     } else {
-      const response = await registration(email, password)
-      console.log(response)
-    }    
+      response = await registration(email, password)      
+    }
+    user.setUser(response) 
+    user.setIsAuth(true)
+    console.log(user.user)
   }
 
   return (
@@ -122,6 +135,6 @@ const Auth = () => {
     }
     </Container>    
   )
-}
+})
 
 export default Auth

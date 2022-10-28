@@ -13,18 +13,20 @@
 //И теперь этот токен мы можем сохранять в локальное хранилище, и пользоватеьл будет авторизован
 //Но также нам нужно будет дополнительно сохранять информацию о пользователе (из JWT токена), чтобв, например отрисовывать ее на странице профиля нашего пользователя
 //Для этого, дополнительно установим и воспользуемся библиотекой "jwt-decode" - которая распарсивает (достает информацию) из JWT токенов, чтобы мы могли ею пользоваться
-//
+//Переменную которая будет принимать response, можно сразу деструктуризировать ({data} - это уже выцепелнный токен), чтобы было более удобно распарсить токен
+//А возвращать из функции мы будем уже результат декодированого токена - jwt_decode(data). Терепь при регестрации, мы можем вывести в логи объект, с информацией о юзере
 
 import {$host, $authHost} from './index'
+import jwt_decode from 'jwt-decode'
 
 export const registration = async (email, password) => {
-    const response = await $host.post('api/user/registration', {email, password, role: 'ADMIN'})
-    return response
-}
+    const {data} = await $host.post('api/user/registration', {email, password, role: 'ADMIN'})
+    return jwt_decode(data)
+} 
 
 export const login = async (email, password) => {
-    const response = await $host.post('api/user/login', {email, password})
-    return response
+    const {data} = await $host.post('api/user/login', {email, password})
+    return jwt_decode(data)
 }
 
 export const check = async () => {
