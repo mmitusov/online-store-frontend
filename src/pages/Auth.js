@@ -39,36 +39,45 @@
 //Так как userStore.js должент хранить в себе инфо о пользователе, то добавим туда новую инфо 'user.setUser(response)' и 'user.setIsAuth(true)' - в зависимости от статуса пользователя, некоторый функционал может быть закрытым, такой как страница Админа
 //Теперь, когда в userStore.js, "this._isAuth" может меняться динамически, то поменяем ранее заданое true в userStore.js (для тестинга работоспособности), на изначальное false
 
-//Но что если пользователь ввел невреные данные логина? Мы должны как-то ему на это указать
-//
+//Но что если пользователь ввел невреные данные логина? Мы должны как-то обрабатывать эти ошибки, чтобы сказать об этом юзеру. 
+//Для этого обернем click() в 'try-catch' блок, и в случае ошибки выведем alert(e.response.data.message)
+
+//Также, после того как пользователь залогинился, нам нужно отправлять его на страницу магазина, для это воспользуемся useNavigate ('react-router-dom')
+//И если функция click() выполнилась успешно, то в ее конце делаем редирект на страницу магазина 'navigate(SHOP_ROUTE)'
+//И на этом моменте мы наконец можем логинится/регестрироваться, но наш токен нигде не сохраняется. И поэтому в userAPI.js, пропишем логику его сохранения
 
 import { observer } from 'mobx-react-lite'
 import React, { useContext } from 'react'
 import {Context} from '../index'
 import { useState } from 'react'
 import { Button, Card, Container, Form } from 'react-bootstrap'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { login, registration } from '../http/userAPI'
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts'
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../utils/consts'
 
 const Auth = observer(() => {
   const {user} = useContext(Context)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const navigate = useNavigate()
   const location = useLocation()
   const isLogin = location.pathname === LOGIN_ROUTE
 
   const click = async () => {
-    let response;
-    if (isLogin) {
-      response = await login(email, password)     
-    } else {
-      response = await registration(email, password)      
-    }
-    user.setUser(response) 
-    user.setIsAuth(true)
-    console.log(user.user)
+    try {
+        let response;
+        if (isLogin) {
+          response = await login(email, password)     
+        } else {
+          response = await registration(email, password)      
+        }
+        user.setUser(response) 
+        user.setIsAuth(true)
+        navigate(SHOP_ROUTE)       
+    } catch(e) {
+        alert(e.response.data.message)
+    }    
   }
 
   return (
