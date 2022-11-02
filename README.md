@@ -48,7 +48,6 @@ Admin.js хранит в себе 3 основных кнопки/функцио
 
 Теперь мы можем регестрировать пользователей и получать ответ от сервера, который будет содержать в себе JWT токен этого пользователя. И чтобы получать данные о пользователе из этого токена, воспользуеся npm пакетом - jwt-decode. Не забываем сохранить декодированные данные о пользователе (email, роль, id) в нашем хранилище userStore.js (mobx). И учесть вариант когда после ввода пользователя данных, мы можем получить какую-либо ошибку: для этого оборачивает функцию click() из Auth.js, в try-catch блок. А в случае успешной авторизации, в Auth.js, также добавим логику на редирект пользователя на заглавную страницу магазина.
 
-!!!Описать как работает логика авторизациитот от начсала до конца  
 # Заметки
 
 'rafce' - snippet
@@ -64,7 +63,4 @@ Admin.js хранит в себе 3 основных кнопки/функцио
 VS Code расширения:
     ES7+ React/Redux/React-Native snippets – командой “rfce” можно создавать класовый скелет компонентов в React
 
-How to properly clean Create-React-App. -> Delete everything but index.js (initial starting point which later on calls App.js, where we will be implementing our code; don't forget to delete serviceWorker) and App.js (where we write our structure). These are backbone of our React-app so we're leaving them where yhey are. You can also leave indedx.css or App.js untouched. However they are not vital for React-app to work and we can create our own css files later on if we'd want to. Также удалим все лишнее из index.html. В index.html, в <body> будет храниться единственный div. И именно в него будет монтироваться наше приложение (наш корневой компонент App).
 
-Using environment variables in a React application (Using a '.env' file)
-When using create-react-app, the variable needs to start with REACT_APP_ otherwise this won’t work, and it’s mostly for security reasons. e.g. 'REACT_APP_MY_ENV=Some value'
