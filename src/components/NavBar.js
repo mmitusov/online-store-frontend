@@ -23,9 +23,11 @@
 //После реализации и подвязки к беку логики логина, регестрации и проверки токена, вернемся к навбару у реальзуем нормальную функцию по выходу из учетной записи - logOut
 //В функции logOut, после выхода пользователя, мы будем удалять информацию о нем из глобального хранилища mobx: user.setUser({}), user.setIsAuth(false)
 //И при нажатии на кнопку "Выйти" будем эту вызывать функцию, вместо старой функции которая нас просто переводила на другую страницу: onClick={() => navigate(LOGIN_ROUTE + '/')
+//Также, заменим логику кнопки "Авторизации". При нажатии, нас будет переводить на страницу логина/регестрации, вместо старой логики-заглушки: onClick={() => user.setIsAuth(true)
+//С навбаром пока закончили. Далее создадим новый файл deviceAPI.js, и в нем реализуем логику по сознанию типов, брендов и устройств на бекенде
 
 import React, { useContext } from 'react'
-import {Context} from '../index'
+import {Context} from '../index' 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -61,7 +63,7 @@ const NavBar = observer(() => {
                         </Nav>
                     :
                         <Nav className="ms-auto my-2 my-lg-0" style={{color: 'blue'}} navbarScroll> {/*P.S. ml-auto не работает, работает - ms-auto*/}                     
-                            <Button onClick={() => user.setIsAuth(true)} variant='outline-ligth'>
+                            <Button onClick={() => navigate(LOGIN_ROUTE)} variant='outline-ligth'>
                                 Авторизация
                             </Button>                                    
                         </Nav>
