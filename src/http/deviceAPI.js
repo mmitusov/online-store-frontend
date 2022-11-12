@@ -1,5 +1,6 @@
 //В userAUTH.js реализированы функции по сознанию типов, брендов и устройств на бекенде, через наш UI на фронтернде
 //Логика работы компонента будет по большей части идентична userAPI.js
+//Сперва займемся типами товаров
 //Создаем createType и fetchTypes, для создания нового типа и получения уже существующих типов на бекенде
 //createType: Передаем параметром type, по адрессу api/type. И в теле запроса будем передавать тип из параметра - ('api/type', type)
 //И так как для создания типа нам нужно проверить авторизован ли пользователь (должен быть админом), то мы используем $authHost
@@ -8,8 +9,9 @@
 //В fetchTypes достаточно обыного хоста ($host), так как любой из пользователей имеет доступ к получению списка типов
 //И протестируем написаную логику по получению типов товара в компоненте Shop.js
 
+//Далее займемся брендами товаров
+
 import {$host, $authHost} from './index'
-import jwt_decode from 'jwt-decode'
 
 export const createType = async (type) => {
     const {data} = await $authHost.post('api/type', type)
@@ -17,6 +19,6 @@ export const createType = async (type) => {
 } 
 
 export const fetchTypes = async () => {
-    const {data} = await $host.post('api/type')
+    const {data} = await $host.get('api/type')
     return data
 }

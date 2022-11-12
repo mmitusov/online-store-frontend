@@ -7,13 +7,30 @@
 //Далее создадим карточки магазина (md={9}), для этого создадим новый файл "BrandBar" в папке "components"
 //Далее создаем компонент DeviceItem, для отображениея сетки со списками товаров
 
-import React from 'react'
+//После того как мы реализовали авторизацию, далее при подвязке фронта к беку, сделаем так, чтобы типы, бренды и деввайсы отображались динамично, в зависимости от информации на беке
+//Начнем с логики fetchTypes их deviceAPI.js
+//Сперва обернем весь наш компонет в observer('mobx-react-lite'), чтобы елемент, в зависимости от действий юзера, перерендривался в режиме реального времени (чтобы mobx мог отслеживать изменения значений состояний и при их изменении автоматически обновлять контент страницы)
+//Получаем хранилище deviseStore, с помощью хука useContext
+//И с помощью useEffect, при загрузке страницы Shop, будем единожды подгружать инфу о наших устройствах. P.S. Чтобы подгрузка выполнялась единожды, в useEffect вторым параметром передаем ПУСТОЙ массив
+//Затем в useEffect вызываем функцию fetchTypes из deviceAPI.js. И в случае успешного запроса в хранилище device(deviseStore) вызываем функцию setTypes, чтобы сохранить в хранилище полученные с бека типы товаров (data)
+//И теперь когда у нас есть рабочая логика по получаению типов товара с бека, мы можем удалить из deviseStore значения которые мы до этого хардкодили вручную
+
+import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import BrandBar from '../components/BrandBar'
 import DeviceList from '../components/DeviceList'
 import TypeBar from '../components/TypeBar'
+import { observer } from 'mobx-react-lite'
+import { Context } from '../index'
+import { fetchTypes } from '../http/deviceAPI'
 
-const Shop = () => {
+const Shop = observer( () => {
+  const {device} = useContext(Context) 
+
+  useEffect(() => {
+    fetchTypes().then(data => device.setTypes(data))
+  }, [])
+
   return (
     <Container>
       <Row className='mt-4'>
@@ -27,6 +44,6 @@ const Shop = () => {
       </Row>
     </Container>
   )
-}
+})
 
 export default Shop
