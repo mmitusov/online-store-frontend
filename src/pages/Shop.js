@@ -14,6 +14,11 @@
 //И с помощью useEffect, при загрузке страницы Shop, будем единожды подгружать инфу о наших устройствах. P.S. Чтобы подгрузка выполнялась единожды, в useEffect вторым параметром передаем ПУСТОЙ массив
 //Затем в useEffect вызываем функцию fetchTypes из deviceAPI.js. И в случае успешного запроса в хранилище device(deviseStore) вызываем функцию setTypes, чтобы сохранить в хранилище полученные с бека типы товаров (data)
 //И теперь когда у нас есть рабочая логика по получаению типов товара с бека, мы можем удалить из deviseStore значения которые мы до этого хардкодили вручную
+//И теперь аналлигично добавляем логику для fetchBrands и fetchDevices, которая по логике идентична с fetchTypes
+//И также аналлигично мы можем удалить из deviseStore значения всех брендов и девайсов которые мы до этого хардкодили вручную
+//!!!Но не забываем, что для нашего сайта мы добавляли пагинацию для отображения наших девайсов
+//Поэтому с бека мы получаем не сразу массив объектов девайсов, а объект {count: 2, rows: [,…]}. Где "count" хранит значение для пагинации, а "rows" - уже сам массив объектов с девайсами
+//И поэтому в deviseStore, мы сохраняем не просто data, а data.rows
 
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
@@ -22,13 +27,15 @@ import DeviceList from '../components/DeviceList'
 import TypeBar from '../components/TypeBar'
 import { observer } from 'mobx-react-lite'
 import { Context } from '../index'
-import { fetchTypes } from '../http/deviceAPI'
+import { fetchBrands, fetchDevices, fetchTypes } from '../http/deviceAPI'
 
 const Shop = observer( () => {
   const {device} = useContext(Context) 
 
   useEffect(() => {
     fetchTypes().then(data => device.setTypes(data))
+    fetchBrands().then(data => device.setBrands(data))
+    fetchDevices().then(data => device.setDevices(data.rows))
   }, [])
 
   return (

@@ -6,23 +6,16 @@
 //После первоначальной настройки Shop.js, теперь также добавим в deviceStore логику setSelectedType/this._selectedType
 //Так как при нажатии на какой то конкретный тип товара, нам нужно его визуально выделить (чтобы мы видели на что именно мы нажали)
 //И теперь если .id добавленного при нажатии кнопки типа товара === .id изначально существующего типа, то он будет подсвечен отдельным цветом
+
+//После имплементации в Shop.js логики по получению типов, брендов, девайсов с бека, удаляем захардкоженные значения внутри this._types и т.д.
+
 import { makeAutoObservable } from "mobx";
 
 export default class DeviceStore {
     constructor() {
         this._types = []
-        this._brands = [
-            {id: 1, name: "Samsung"},
-            {id: 2, name: "Apple"},
-            {id: 3, name: "Xiaomi"},
-            {id: 4, name: "Asus"},
-        ]
-        this._devices = [
-            {id: 1, name: "iPhone 14", price: 800, raiting: 5, img: "https://www.apple.com/newsroom/images/product/iphone/geo/Apple_iphone13_hero_geo_09142021_inline.jpg.large.jpg"},
-            {id: 2, name: "iPhone 14 Max", price: 900, raiting: 5, img: "https://www.apple.com/newsroom/images/product/iphone/geo/Apple_iphone13_hero_geo_09142021_inline.jpg.large.jpg"},
-            {id: 3, name: "iPhone 14 Pro", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"},
-            {id: 4, name: "iPhone 14 Pro Max", price: 1000, raiting: 5, img: "https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/i/p/iphone-14-pro-storage-select-202209-6-7inch-deeppurple.jpg/w_600"}
-        ]
+        this._brands = []
+        this._devices = []
         this._selectedType = {}
         this._selectedBrand = {}
         makeAutoObservable(this)
