@@ -13,6 +13,9 @@
 //В функцию передаем DEVICE_ROUTE вместе с id-шником конкретного товара '+ '/' + device.id', чтобы при нажатии на товар перемещатся прямиком на адрес его страницы
 //То есть, мы выцепляем id-шник конкретного товара из БД и по нему делаем запрос на сервер, для получения данных о товаре (нас полностью преводит с текущей страницы на страницу с товаром)
 
+//После того как мы реализовали авторизацию, при подвязке фронта к беку, возникла ошибка - при отрисовке девайсов с бека, не подгружаются сопутствующие им картинки
+//Исправим это в поле <Image>, путем добавления к названию фалйла src={device.img}, url сервера, где этот файл хранится. url берем из созданой нами системной переменной - process.env.REACT_APP_API_URL
+
 import { Card, CardGroup, Image } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import starImg from '../assets/Star_full.png'
@@ -24,11 +27,11 @@ const DeviceItem = ({device}) => {
     return (
         <CardGroup onClick={() => navigate(DEVICE_ROUTE + '/' + device.id)}>
             <Card style={{width: 200, cursor: 'pointer'}} border={"light"}>
-                <Image width={180} src={device.img} className='fluid'/>
+                <Image width={180} src={process.env.REACT_APP_API_URL + device.img} className='fluid'/>
                 <div className='d-flex justify-content-between align-items-center mt-3 text-black-50'>
                     <div> Samsung etc. </div>
                     <div className='d-inline-flex align-items-center'>
-                        <div> {device.raiting} </div>
+                        <div> {device.rating} </div>
                         <Image width={20} height={20} src={starImg}/>
                     </div>                    
                 </div>
