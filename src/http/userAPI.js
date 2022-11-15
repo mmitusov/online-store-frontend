@@ -24,23 +24,26 @@
 //После получения обновленного токена, мы перезаписываем текущий (localStorage.setItem('token', data.token)) и из перезаписаного токена опять возвращаем данные о пользователе. Функция check готова
 //Далее перейдем в компонент App.js
 
+//!!!!!P.S.!!!!!! При логине и регистрации, наш деструктуризированный data сразу содержит токен. А вот data из check(), возвращает объект, в котором токен храниться под ключом data.token
+//И если это не учесть, то мы не сожем нормально ни обновлять, ни сохранять токен. И также это значит, что сервер также не будет способен воспользоваться токеном и будет выдавать ошибки
+
 import {$host, $authHost} from './index'
 import jwt_decode from 'jwt-decode'
 
 export const registration = async (email, password) => {
     const {data} = await $host.post('api/user/registration', {email, password, role: 'ADMIN'})
-    localStorage.setItem('token', data.token)
+    localStorage.setItem('token', data)    
     return jwt_decode(data)
 } 
 
 export const login = async (email, password) => {
     const {data} = await $host.post('api/user/login', {email, password})
-    localStorage.setItem('token', data.token)
+    localStorage.setItem('token', data)    
     return jwt_decode(data)
 }
 
 export const check = async () => {
-    const {data} = await $authHost.get('api/user/auth')
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data)
+    const {data} = await $authHost.get('api/user/auth')    
+    localStorage.setItem('token', data.token)    
+    return jwt_decode(data.token)
 }

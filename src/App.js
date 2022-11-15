@@ -36,21 +36,13 @@ const App = observer( () =>{
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let response = check()
-    if (response) {     
-      console.log(response) 
+    // console.log(localStorage.getItem('token')) - для проверки, что наш токен сохранен в браузере
+    check().then(data => { 
+      console.log(data)
       user.setUser(true)
       user.setIsAuth(true)
-      setLoading(false)
-    }
+    }).finally(() => setLoading(false))
   }, [])
-
-  // useEffect(() => {
-  //   check().then(data => {      
-  //     user.setUser(true)
-  //     user.setIsAuth(true)
-  //   }).finally(() => setLoading(false))
-  // }, [])
 
   if (loading) {
     return <Spinner animation={'grow'}/>
