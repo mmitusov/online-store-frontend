@@ -54,7 +54,7 @@ const DevicePage = () => {
   const {id} = useParams()
   useEffect(() => {
     fetchOneDevice(id).then(data => setDevice(data))
-  })
+  }, [])
   
   return (
     <Container className='mt-3'>
