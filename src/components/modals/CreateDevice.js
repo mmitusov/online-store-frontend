@@ -51,6 +51,11 @@
 //Но как только мы попадаем на '(i.number !== number)===false', то так как Boolean=false, этот елемент не возвращается .filter()
 //Таким образом он мы убираем его из масива
 
+//На стадии подвязки фронта к беку, также допишем логику по отправке ряда введенной информации о товаре на бек, чтобы создать новое устройство в нашей базе данных
+//Логика будет немного сложнее той, что указана в CreateType.js и CreateBrand.js
+//В данном компоненте у нас имеется много разных импутов, которые нам сперва нужно оживить и записывать их значения в соответствующее состояние (useState)
+//Для этого сперва займемся созданием состояний: name, price, file, brand, type
+
 import React from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
@@ -59,6 +64,11 @@ import {Context} from '../../index'
 
 const CreateDevice = ({show, onHide}) => {
   const {device} = useContext(Context)
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState(0)
+  const [file, setFile] = useState(null)
+  const [brand, setBrand] = useState(null)
+  const [type, setType] = useState(null)
   const [info, setInfo] = useState([])
   
   const addInfo = () => {

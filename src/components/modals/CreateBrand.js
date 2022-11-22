@@ -10,10 +10,20 @@
 //Кстати в ствойствах <Form.Control> мы можем задавать, какую функцию он будет выполнять, при помощи встроенных в бутстрап команд, e.g. 'placeholder'
 //И добавим еще одну кнопку. Одна - для добавления нового типа товара, другая - для закрытия модального окна
 
-import React from 'react'
+//На стадии подвязки фронта к беку, также допишем логику по отправке введенного бренда товара на бек, чтобы создать новый бренд товара в нашей базе данных
+//Логика будет идетична с той, что указана в CreateType.js
+
+import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { createBrand } from '../../http/deviceAPI'
 
 const CreateBrand = ({show, onHide}) => {
+  const [value, setValue] = useState('')
+  const addBrand = () => {
+    createBrand({name: value}).then(data => setValue(''))
+    onHide()
+  }
+
   return (
     <Modal
     show={show}
@@ -30,11 +40,13 @@ const CreateBrand = ({show, onHide}) => {
       <Form>
         <Form.Control 
           placeholder={'Введите название бренда'}
+          value={value}
+          onChange={e => setValue(e.target.value)}
         />
       </Form>
     </Modal.Body>
     <Modal.Footer>
-      <Button variant='outline-success' onClick={onHide}>Добавить бренд</Button>
+      <Button variant='outline-success' onClick={addBrand}>Добавить бренд</Button>
       <Button variant='outline-danger' onClick={onHide}>Закрыть окно</Button>
     </Modal.Footer>
   </Modal>
