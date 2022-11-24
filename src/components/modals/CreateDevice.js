@@ -54,7 +54,16 @@
 //На стадии подвязки фронта к беку, также допишем логику по отправке ряда введенной информации о товаре на бек, чтобы создать новое устройство в нашей базе данных
 //Логика будет немного сложнее той, что указана в CreateType.js и CreateBrand.js
 //В данном компоненте у нас имеется много разных импутов, которые нам сперва нужно оживить и записывать их значения в соответствующее состояние (useState)
-//Для этого сперва займемся созданием состояний: name, price, file, brand, type
+//Для этого сперва займемся созданием состояний: name, price, file
+//Далее создадим функцию selectFile - которая будет вызываться когда когда мы будем перетаскивать файлы с нашего компьютера в браузер, для дальнейшей загрузки их на бек
+//После чего onChange в поле с "type='file'" будем вызывать эту функцию и по нулевому индексу (так как мы получаем объект и из него мы хотим достать сам файл) сохранять в состоянии тот файл, что перетащил в браузер наш юзер
+//Далее при вводе данных оживляем инпуты с названием и стоимостью устройства: setName, setPrice
+//Но в случае с ценой, дополнительно еще приведем наши вводные данные к числовому значению - setPrice(Number(e.target.value))}
+//Чтобы привязать новый девайс к одному из существующих брендов и типов, то на выпадающее меню, где отображается их перечень (сохраненный в mobx с бека), повесим слушатель события onClick
+//Но предварительно, при помощи useEffect, будем подгружать эти типы с бека и сохраниять в mobx
+//Далее при нажатии на один из брендов или типов из списка, мы будем передавать этот бренд или тип в соответствующею функцию из глобального mobx хранилища - device.setSelectedType(type)/Brand
+//Можно было бы создать и воспользоваться локальным хранилищем, для сохранения выбранного инпута локально (при помощи useState), но потренируемся работать с mobx
+//И при выборе бренда/типа из выпадающего меню, также будем менять и название соответствующего выпадающего меню с базового на этот бренда/типа, чтобы мы явно видели что мы выбрали - {device.selectedType.name || 'Присвойте тип товара'}
 
 import React from 'react'
 import { useState } from 'react'
@@ -67,9 +76,13 @@ const CreateDevice = ({show, onHide}) => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [file, setFile] = useState(null)
-  const [brand, setBrand] = useState(null)
-  const [type, setType] = useState(null)
   const [info, setInfo] = useState([])
+
+  useEffect(() => {
+    fetchTypes().then(data => device.setTypes(data))
+    fetchBrands().then(data => device.setBrands(data))
+    fetchDevices().then(data => device.setDevices(data.rows))
+  }, [])
   
   const addInfo = () => {
     setInfo([...info, {title:'', description:'', number: Date.now()}])
@@ -77,6 +90,10 @@ const CreateDevice = ({show, onHide}) => {
 
   const removeInfo = (number) => {
     setInfo(info.filter(i => i.number !== number))
+  }
+
+  const selectFile = (e) => {
+    setFile(e.target.files[0]) //console.log(e.target.files) - для проверки работы    
   }
 
   return (
@@ -96,15 +113,19 @@ const CreateDevice = ({show, onHide}) => {
         
         <div className='d-flex justify-content-around'>
           <Dropdown className='mt-3 mb-3'>
-            <Dropdown.Toggle>Присвойте тип товара</Dropdown.Toggle>
+            <Dropdown.Toggle>{device.selectedType.name || 'Присвойте тип товара'}</Dropdown.Toggle>
               <Dropdown.Menu>{device.types.map(type => 
-                <Dropdown.Item key={type.id}>{type.name}</Dropdown.Item>
+                <Dropdown.Item key={type.id} onClick={() => device.setSelectedType(type)}>
+                  {type.name}
+                </Dropdown.Item>
               )}</Dropdown.Menu>
           </Dropdown>
           <Dropdown className='mt-3 mb-3'>
-            <Dropdown.Toggle>Присвойте бренд товара</Dropdown.Toggle>
+            <Dropdown.Toggle>{device.selectedBrand.name || 'Присвойте бренд товара'}</Dropdown.Toggle>
               <Dropdown.Menu>{device.brands.map(brand => 
-                <Dropdown.Item key={brand.id}>{brand.name}</Dropdown.Item>
+                <Dropdown.Item key={brand.id} onClick={() => device.setSelectedBrand(brand)}>
+                  {brand.name}
+                </Dropdown.Item>
               )}</Dropdown.Menu>
           </Dropdown>
         </div>
@@ -112,15 +133,20 @@ const CreateDevice = ({show, onHide}) => {
         <Form.Control 
           className='mt-3'
           placeholder='Введите наименование устройства'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <Form.Control 
           className='mt-3'
           placeholder='Введите стоимость устройства'
           type='number'
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
         />
         <Form.Control 
           className='mt-3'            
           type='file'
+          onChange={selectFile}
         />
         <hr/>
 
