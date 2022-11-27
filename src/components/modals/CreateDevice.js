@@ -57,21 +57,37 @@
 //Для этого сперва займемся созданием состояний: name, price, file
 //Далее создадим функцию selectFile - которая будет вызываться когда когда мы будем перетаскивать файлы с нашего компьютера в браузер, для дальнейшей загрузки их на бек
 //После чего onChange в поле с "type='file'" будем вызывать эту функцию и по нулевому индексу (так как мы получаем объект и из него мы хотим достать сам файл) сохранять в состоянии тот файл, что перетащил в браузер наш юзер
+
 //Далее при вводе данных оживляем инпуты с названием и стоимостью устройства: setName, setPrice
 //Но в случае с ценой, дополнительно еще приведем наши вводные данные к числовому значению - setPrice(Number(e.target.value))}
 //Чтобы привязать новый девайс к одному из существующих брендов и типов, то на выпадающее меню, где отображается их перечень (сохраненный в mobx с бека), повесим слушатель события onClick
-//Но предварительно, при помощи useEffect, будем подгружать эти типы с бека и сохраниять в mobx
+//Но предварительно, при открытии модального окна, используя useEffect, будем подгружать эти типы с бека и сохраниять в mobx
+//Делаем мы это для того, потому что в случае если мы не зашли на стартовую страницу Shop.js, а сразу перешли по ссылке на админ панель, то информация с бека тогда у нас автоматически не подгружается
 //Далее при нажатии на один из брендов или типов из списка, мы будем передавать этот бренд или тип в соответствующею функцию из глобального mobx хранилища - device.setSelectedType(type)/Brand
 //Можно было бы создать и воспользоваться локальным хранилищем, для сохранения выбранного инпута локально (при помощи useState), но потренируемся работать с mobx
 //И при выборе бренда/типа из выпадающего меню, также будем менять и название соответствующего выпадающего меню с базового на этот бренда/типа, чтобы мы явно видели что мы выбрали - {device.selectedType.name || 'Присвойте тип товара'}
+//Но для отображения того что мы выбрали, нам нужно также обернуть весь компонент в observer(), чтобы страница автоматом ререндерелась, и название стандартной кнопки менялась на тот текст, что мы выбрали с выпадающего меню
 
-import React from 'react'
-import { useState } from 'react'
+//Далее разберемся с тем как добавлять характеристики товара в локальное хранилище, после того как админ ввел необходимые данные в инпут, ведь сейчас они добавляются пустыми
+//Для этого, сперва создадим функцию changeInfo, в ней, при помощи .map, пробегаемся по массиву объектов и если номер объекта итерации (i.number) совпадает с номером, что мы передаем в функцию (number), то тогда мы возвращаем новый объект
+//И в этот новый объект разварачиваем нашу характеристику {...i,} и после чего по ключу заменяем у нее поле на новое значение value которое мы передаем в функцию ([key]: value). А если номер не совпадает то возвращаем объект без внесения в него изменений
+//И также не забываем оживить наше поле характеристик товара
+//Для этого под каждый объект итерации в массиве, будем выцеплять значение его импута (value={i.title/description}) и затем при изменении инпута уже вызывать функцию changeInfo - onChange={(e) => changeInfo('title/description', e.target.value, i.number)}
+//Внутри передаем 'title/description' как наш key, value - это наш инпут; и передаем  number - получаем его из объекта текущей итерации (i.number). P.S. changeInfo = (key, value, number)
+//После чего, описание характеристик теперь будет автоматически сохраняться в локальное хранилище
+
+//И теперь наконец реализуем функцию которая будет отправлять запрос на сервер и создавать новое устройство из введенной нами информации
+//Функцию назовем addDevice и будем вызывать ее при нажатии на кнопку "Добавить девайс"
+//Внутри вызываем функцию createDevice(), которой мы отправляем запрос на сервер
+
+import { observer } from 'mobx-react-lite'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { Button, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap'
+import { createDevice, fetchBrands, fetchTypes } from '../../http/deviceAPI'
 import {Context} from '../../index'
 
-const CreateDevice = ({show, onHide}) => {
+const CreateDevice = observer( ({show, onHide}) => {
   const {device} = useContext(Context)
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
@@ -80,8 +96,7 @@ const CreateDevice = ({show, onHide}) => {
 
   useEffect(() => {
     fetchTypes().then(data => device.setTypes(data))
-    fetchBrands().then(data => device.setBrands(data))
-    fetchDevices().then(data => device.setDevices(data.rows))
+    fetchBrands().then(data => device.setBrands(data))    
   }, [])
   
   const addInfo = () => {
@@ -92,8 +107,23 @@ const CreateDevice = ({show, onHide}) => {
     setInfo(info.filter(i => i.number !== number))
   }
 
+  const changeInfo = (key, value, number) => {
+    setInfo(info.map(i => i.number === number ? {...i, [key]: value} : i))
+  }
+
   const selectFile = (e) => {
     setFile(e.target.files[0]) //console.log(e.target.files) - для проверки работы    
+  }
+
+  const addDevice = () => {
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('price', `${price}`)
+    formData.append('img', file)
+    formData.append('brandId', device.selectedBrand.id)
+    formData.append('typeId', device.selectedType.id)
+    formData.append('info', JSON.stringify(info))
+    createDevice(formData).then(data => onHide())
   }
 
   return (
@@ -158,11 +188,15 @@ const CreateDevice = ({show, onHide}) => {
             <Col md={4}>
               <Form.Control 
                 placeholder='Название характеристики'
+                value={i.title}
+                onChange={(e) => changeInfo('title', e.target.value, i.number)}
               />              
             </Col>
             <Col md={4}>
               <Form.Control 
                 placeholder='Описание характеристики'
+                value={i.description}
+                onChange={(e) => changeInfo('description', e.target.value, i.number)}
               />
             </Col>
             <Col md={4}>
@@ -176,11 +210,11 @@ const CreateDevice = ({show, onHide}) => {
       </Form>
     </Modal.Body>
     <Modal.Footer>
-      <Button variant='outline-success' onClick={onHide}>Добавить бренд</Button>
+      <Button variant='outline-success' onClick={addDevice}>Добавить девайс</Button>
       <Button variant='outline-danger' onClick={onHide}>Закрыть окно</Button>
     </Modal.Footer>
   </Modal>
   )
-}
+})
 
 export default CreateDevice
