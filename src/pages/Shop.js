@@ -21,7 +21,9 @@
 //И поэтому в deviseStore, мы сохраняем не просто data, а data.rows
 //Однако при подгрузке девайсов, на данном этапе, у нас почему-то не подгружаются картинки девайсов
 //Подправим это в компоненте DeviceItem.js - именно он ответственный за отрисовку отдельно взятой карточки и ее елементов
-//И после этого, в DevicePage.js, займемся динамическим отображением данных 
+//И после этого, в DevicePage.js, займемся динамическим отображением данных
+
+//Ближе к концу разработки, добавим еще и елемент пагинации внизу страницы, импортировав компонент Pages.js
 
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
@@ -31,6 +33,7 @@ import TypeBar from '../components/TypeBar'
 import { observer } from 'mobx-react-lite'
 import { Context } from '../index'
 import { fetchBrands, fetchDevices, fetchTypes } from '../http/deviceAPI'
+import Pages from '../components/Pages'
 
 const Shop = observer( () => {
   const {device} = useContext(Context) 
@@ -50,6 +53,7 @@ const Shop = observer( () => {
         <Col lg={9} md={9} sm={9} >
           <BrandBar />
           <DeviceList />
+          <Pages/>
         </Col>
       </Row>
     </Container>

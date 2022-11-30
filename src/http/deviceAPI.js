@@ -15,6 +15,10 @@
 //Но ниже мы также добавляем и функцию fetchOneDevice - для получения одного, конкретного девайса
 //Параметром эта функция будет принимать id товара который мы ищем. И этот id передаем как часть строки запроса: ('api/device/' + id)
 
+//Ближе к концу разработки, для работы логики по пагинации, модифицируем нашу функцию запроса fetchBrands()
+//В эту функцию, параметрами мы теперь будем передавать: id типа, id бренда, номер страницы и лимит отображения девайсов на странице (по умолчанию сделаем лимит = 5)
+//Затем, в опциях, мы можем эти параметры указать, для дальнейшей отправки их на бек - .get('api/brand', {params: { ..., ... etc. }})
+
 import {$host, $authHost} from './index'
 
 export const createType = async (type) => {
@@ -31,8 +35,10 @@ export const createBrand = async (brand) => {
     const {data} = await $authHost.post('api/brand', brand)
     return data
 } 
-export const fetchBrands = async () => {
-    const {data} = await $host.get('api/brand')
+export const fetchBrands = async (typeId, brandId, page, limit=5) => {
+    const {data} = await $host.get('api/brand', {params: {
+        typeId, brandId, page, limit
+    }})
     return data
 }
 
