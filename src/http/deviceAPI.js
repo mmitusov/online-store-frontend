@@ -15,12 +15,16 @@
 //Но ниже мы также добавляем и функцию fetchOneDevice - для получения одного, конкретного девайса
 //Параметром эта функция будет принимать id товара который мы ищем. И этот id передаем как часть строки запроса: ('api/device/' + id)
 
-//Ближе к концу разработки, для работы логики по пагинации, модифицируем нашу функцию запроса fetchBrands()
+//Ближе к концу разработки, для работы логики по пагинации, модифицируем нашу функцию запроса fetchDevices()
 //В эту функцию, параметрами мы теперь будем передавать: id типа товара, id бренда, номер страницы и лимит отображения девайсов на странице (по умолчанию сделаем лимит = 5)
 //Затем, в опциях, мы можем эти параметры указать, для дальнейшей отправки их на бек - .get('api/brand', {params: { ..., ... etc. }})
-//Напомню, что id типа и id бренда пкркдаются, чтобы получить конкретные/еужные товары с бека по заданому типу и бренду
-//То есть мы например нажали на холодильники и к нам подгрухились все имеющееся холодильники
-//Далее в Shop.js нам нужно напишем логику по подсчету кол-ва товаров которые мы получили с бека
+//Напомню, что id типа и id бренда передаются, чтобы получить конкретные/нужные товары с бека по заданому типу и бренду, если нам это понадобиться
+//Изначально, в Shop.js, id типа и id бренда задаются как null, чтобы мы подтягивали абсолютно все товары, в независимоти от типа и бренда - fetchDevices(null, null, 1, 3)
+//Но при желании, мы можем заменять эти id на то что нам нужно, получая при этом коннкретную группу товаров
+//То есть, например, мы нажали на холодильники, передали их id-шники и к нам подгрузились все имеющееся холодильники
+//Далее, в Shop.js нам нужно написать логику по сохранению информации о том сколько всего товаров мы получили с бека - device.setTotalCount(data.count)
+//Это нам нужно для того, чтобы потом подсчитать кол-во товаров которое мы хотим отобразить на ка каждой странице пагинации
+//А саму логику по подсчету кол-ва товров, напишем уже в Pages.js - const pageCount = Math.ceil(device.totalCount / device.limit)
 
 import {$host, $authHost} from './index'
 
@@ -38,10 +42,8 @@ export const createBrand = async (brand) => {
     const {data} = await $authHost.post('api/brand', brand)
     return data
 } 
-export const fetchBrands = async (typeId, brandId, page, limit=5) => {
-    const {data} = await $host.get('api/brand', {params: {
-        typeId, brandId, page, limit
-    }})
+export const fetchBrands = async () => {
+    const {data} = await $host.get('api/brand')
     return data
 }
 
@@ -50,8 +52,10 @@ export const createDevice = async (device) => {
     const {data} = await $authHost.post('api/device', device)
     return data
 } 
-export const fetchDevices = async () => {
-    const {data} = await $host.get('api/device')
+export const fetchDevices = async (typeId, brandId, page, limit=5) => {
+    const {data} = await $host.get('api/device', {params: {
+        typeId, brandId, page, limit
+    }})
     return data
 }
 export const fetchOneDevice = async (id) => {
