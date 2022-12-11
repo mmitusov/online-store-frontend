@@ -34,6 +34,11 @@
 //Ответом с севера получаем число того, сколько всего товаров мы подгрузили и сохраняем его в mobx - device.setTotalCount(data.count)
 //Зная сколько всего у нас есть товаров, теперь саму логику по подсчету кол-ва товров для отображения на одной странице, напишем уже в Pages.js - const pageCount = Math.ceil(device.totalCount / device.limit)
 
+//Теперь нам осталось связать работу пагинации и отображения количества подгруженных устройств. 
+//То есть, например, при нажатии на страницу пагинации 2, мы будем отправлять новый запрос на сервер по подгрузке следующих на очереди устройств, после чего менять текущие уже отображаемые устройства на новые.
+//Для этого в Shop.js воспользуемся еще одним хуком useEffect. Который вторым параметром принимает массив зависимостей
+//
+
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import BrandBar from '../components/BrandBar'
@@ -52,9 +57,16 @@ const Shop = observer( () => {
     fetchBrands().then(data => device.setBrands(data))
     fetchDevices(null, null, 1, 3).then(data => {
       device.setDevices(data.rows)
-      device.setTotalCount(data.count)
+      device.setTotalCount(data.count)      
     })
   }, [])
+
+  useEffect(() => {
+    fetchDevices(device.selectedType.id || null, device.selectedBrand.id || null, device.page, 3).then(data => {
+      device.setDevices(data.rows)
+      device.setTotalCount(data.count)
+    })
+  }, [device.selectedType, device.selectedBrand, device.page])
 
   return (
     <Container>
